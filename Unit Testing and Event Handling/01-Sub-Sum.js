@@ -12,4 +12,17 @@ function solve(numbers, start, end) {
 
     return sum;
 }
-solve([10, 20, 30, 40, 50, 60], 3, 300);
+console.log(solve([10, 20, 30, 40, 50, 60], 3, 300));
+
+
+function test() {
+    let actualSum = solve([10, 20, 30, 40, 50, 60], 3, 300);
+    let expectedSum = 150;
+
+    if (actualSum == expectedSum) {
+        console.log('Correct');
+    } else {
+        console.log('Error');
+    }
+}
+test();
