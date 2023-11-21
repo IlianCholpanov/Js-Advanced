@@ -27,13 +27,12 @@ class SummerCamp {
 
     this.listOfParticipants.push(participants);
 
-    return `The ${name} was succesfully registered.`;
+    return `The ${name} was successfully registered.`;
   }
 
   unregisterParticipant(name) {
     if (!this.listOfParticipants.some((x) => x.name == name)) {
       throw new Error(`The ${name} is not registered in the camp.`);
-      //   console.log(`The ${name} is not registered in the camp`);
     }
 
     this.listOfParticipants = this.listOfParticipants.filter(
@@ -54,20 +53,20 @@ class SummerCamp {
 
       player1.power += 20;
       return `The ${player1.name} successfully completed the game ${typeOfGame}.`;
-    } else if (typeOfGame == "WaterBalloonFight") {
+    } else if (typeOfGame == "WaterBalloonFights") {
       player2 = this.listOfParticipants.find((x) => x.name == participant2);
 
-      if (player1.condition !== player2.condition) {
+      if (participant1.condition !== participant2.condition) {
         throw new Error(`Choose players with equal condition.`);
       }
 
-      if (player1.power > player2.power) {
+      if (participant1.power > participant2.power) {
         player1.wins += 1;
         return `The ${player1.name} is winner in the game ${typeOfGame}.`;
-      } else if (player2.power > player1.power) {
+      } else if (participant2.power > participant1.power) {
         player2.wins += 1;
         return `The ${player2.name} is winner in the game ${typeOfGame}.`;
-      } else {
+      } else if (participant1.power == participant2.power) {
         return "There is no winner.";
       }
     }
@@ -77,55 +76,11 @@ class SummerCamp {
     console.log(
       `${this.organizer} will take ${this.listOfParticipants.length} participants on camping to ${this.location}`
     );
+
+    this.listOfParticipants
+      .sort((a, b) => b.wins - a.wins)
+      .forEach((x) => {
+        console.log(`${x.name} - ${x.condition} - ${x.power} - ${x.wins}`);
+      });
   }
 }
-
-const summerCamp = new SummerCamp(
-  "Jane Austen",
-  "Pancharevo Sofia 1137, Bulgaria"
-);
-
-console.log(summerCamp.registerParticipant("Petar Petarson", "student", 300));
-console.log(summerCamp.timeToPlay("Battleship", "Petar Petarson"));
-console.log(summerCamp.registerParticipant("Sara Dickinson", "child", 200));
-console.log(
-  summerCamp.timeToPlay("WaterBalloonFights", "Petar Petarson", "SaraDickinson")
-);
-console.log(summerCamp.registerParticipant("Dimitur Kostov", "student", 300));
-console.log(
-  summerCamp.timeToPlay("WaterBalloonFights", "Petar Petarson", "DimiturKostov")
-);
-
-// The Petar Petarson was successfully registered.
-// The Petar Petarson successfully completed the game Battleship.
-// The Sara Dickinson was successfully registered.
-// Uncaught Error: Choose players with equal condition.
-// The Dimitur Kostov was successfully registered.
-// The Petar Petarson is winner in the game WaterBalloonFights.
-
-// console.log(summerCamp.registerParticipant("Petar Petarson", "student", 300));
-// console.log(summerCamp.timeToPlay("Battleship", "Petar Petarson"));
-// console.log(summerCamp.registerParticipant("Sara Dickinson", "child", 200));
-// console.log(
-//   summerCamp.timeToPlay("WaterBalloonFights", "Petar Petarson", "SaraDickinson")
-// );
-// console.log(summerCamp.registerParticipant("Dimitur Kostov", "student", 300));
-// console.log(
-//   summerCamp.timeToPlay(
-//     "WaterBalloonFights",
-//     "Petar Petarson",
-//     "Dimitur Kostov"
-//   )
-// );
-// console.log(summerCamp.toString());
-
-// The Petar Petarson was successfully registered.
-// The Petar Petarson successfully completed the game Battleship.
-// The Sara Dickinson was successfully registered.
-// Uncaught Error: Choose players with equal condition.
-// The Dimitur Kostov was successfully registered.
-// The Petar Petarson is winner in the game WaterBalloonFights.
-// Jane Austen will take 3 participants on camping to Pancharevo Sofia 1137, Bulgaria
-// Petar Petarson - student - 120 - 1
-// Sara Dickinson - child - 100 - 0
-// Dimitur Kostov - student - 100 - 0
