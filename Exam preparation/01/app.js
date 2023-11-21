@@ -89,4 +89,9 @@ function solve() {
     furnitureListElement.appendChild(rowElement);
     furnitureListElement.appendChild(contentsRowElement);
   });
+
+  modelInputElement.textContent = "";
+  yearInputElement.textContent = "";
+  descriptionInputElement.textContent = "";
+  priceInputElement.textContent = "";
 }
