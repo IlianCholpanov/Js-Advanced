@@ -2,7 +2,7 @@ class SummerCamp {
   constructor(organizer, location) {
     this.organizer = organizer;
     this.location = location;
-    this.listOfPaticipants = [];
+    this.listOfParticipants = [];
     this.priceForTheCamp = {
       child: 150,
       student: 300,
@@ -19,25 +19,48 @@ class SummerCamp {
       return "The money is not enough to pay the stay at the camp.";
     }
 
-    if (this.listOfPaticipants.some((x) => x.name == name)) {
+    if (this.listOfParticipants.some((x) => x.name == name)) {
       return `The ${name} is already registered at the camp.`;
     }
 
     let participants = { name, condition, power: 100, wins: 0 };
 
-    this.listOfPaticipants.push(participants);
+    this.listOfParticipants.push(participants);
 
     return `The ${name} was succesfully registered.`;
   }
 
   unregisterParticipant(name) {
-    if (!this.listOfPaticipants.some((x) => x.name == name)) {
+    if (!this.listOfParticipants.some((x) => x.name == name)) {
       throw new Error(`The ${name} is not registered in the camp.`);
+      //   console.log(`The ${name} is not registered in the camp`);
     }
 
-    this.listOfPaticipants = this.listOfPaticipants.filter(
+    this.listOfParticipants = this.listOfParticipants.filter(
       (x) => x.name != name
     );
+
+    return `The ${name} removed successfully.`;
+  }
+
+  timeToPlay(typeOfGame, participant1, participant2) {
+    let player1 = this.listOfParticipants.find((x) => x.name == participant1);
+    let player2 = null;
+
+    if (typeOfGame == "Battleship") {
+      if (!player1) {
+        throw new Error(`Invalid entered name/s.`);
+      }
+
+      player1.power += 20;
+      return `The ${player1.name} successfully completed the game ${typeOfGame}.`;
+    } else if (typeOfGame == "WaterBalloonFight") {
+      player2 = this.listOfParticipants.find((x) => x.name == participant2);
+
+      if (player1.condition !== player2.condition) {
+        throw new Error(`Choose players with equal condition.`);
+      }
+    }
   }
 }
 
@@ -45,14 +68,6 @@ const summerCamp = new SummerCamp(
   "Jane Austen",
   "Pancharevo Sofia 1137, Bulgaria"
 );
-
-console.log(summerCamp.registerParticipant("Petar Petarson", "student", 300));
-console.log(summerCamp.unregisterParticipant("Petar"));
-console.log(summerCamp.unregisterParticipant("Petar Petarson"));
-
-// The Petar Petarson was successfully registered.
-// Uncaught Error: The Petar is not registered in the camp.
-// The Petar Petarson removed successfully
 
 console.log(summerCamp.registerParticipant("Petar Petarson", "student", 300));
 console.log(summerCamp.timeToPlay("Battleship", "Petar Petarson"));
@@ -72,21 +87,21 @@ console.log(
 // The Dimitur Kostov was successfully registered.
 // The Petar Petarson is winner in the game WaterBalloonFights.
 
-console.log(summerCamp.registerParticipant("Petar Petarson", "student", 300));
-console.log(summerCamp.timeToPlay("Battleship", "Petar Petarson"));
-console.log(summerCamp.registerParticipant("Sara Dickinson", "child", 200));
-console.log(
-  summerCamp.timeToPlay("WaterBalloonFights", "Petar Petarson", "SaraDickinson")
-);
-console.log(summerCamp.registerParticipant("Dimitur Kostov", "student", 300));
-console.log(
-  summerCamp.timeToPlay(
-    "WaterBalloonFights",
-    "Petar Petarson",
-    "Dimitur Kostov"
-  )
-);
-console.log(summerCamp.toString());
+// console.log(summerCamp.registerParticipant("Petar Petarson", "student", 300));
+// console.log(summerCamp.timeToPlay("Battleship", "Petar Petarson"));
+// console.log(summerCamp.registerParticipant("Sara Dickinson", "child", 200));
+// console.log(
+//   summerCamp.timeToPlay("WaterBalloonFights", "Petar Petarson", "SaraDickinson")
+// );
+// console.log(summerCamp.registerParticipant("Dimitur Kostov", "student", 300));
+// console.log(
+//   summerCamp.timeToPlay(
+//     "WaterBalloonFights",
+//     "Petar Petarson",
+//     "Dimitur Kostov"
+//   )
+// );
+// console.log(summerCamp.toString());
 
 // The Petar Petarson was successfully registered.
 // The Petar Petarson successfully completed the game Battleship.
