@@ -60,7 +60,23 @@ class SummerCamp {
       if (player1.condition !== player2.condition) {
         throw new Error(`Choose players with equal condition.`);
       }
+
+      if (player1.power > player2.power) {
+        player1.wins += 1;
+        return `The ${player1.name} is winner in the game ${typeOfGame}.`;
+      } else if (player2.power > player1.power) {
+        player2.wins += 1;
+        return `The ${player2.name} is winner in the game ${typeOfGame}.`;
+      } else {
+        return "There is no winner.";
+      }
     }
+  }
+
+  toString() {
+    console.log(
+      `${this.organizer} will take ${this.listOfParticipants.length} participants on camping to ${this.location}`
+    );
   }
 }
 
