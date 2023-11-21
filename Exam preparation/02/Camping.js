@@ -73,14 +73,17 @@ class SummerCamp {
   }
 
   toString() {
-    console.log(
+    let result = [];
+    result.push(
       `${this.organizer} will take ${this.listOfParticipants.length} participants on camping to ${this.location}`
     );
 
     this.listOfParticipants
       .sort((a, b) => b.wins - a.wins)
       .forEach((x) => {
-        console.log(`${x.name} - ${x.condition} - ${x.power} - ${x.wins}`);
+        result.push(`${x.name} - ${x.condition} - ${x.power} - ${x.wins}`);
       });
+
+    return result.join("\n");
   }
 }
