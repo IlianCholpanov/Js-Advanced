@@ -2,49 +2,61 @@ window.addEventListener("load", solution);
 
 function solution() {
   const sumbitButtonElement = document.getElementById("submitBTN");
-  const fNameInputElement = document.getElementById("fname");
-  const emailInputElement = document.getElementById("email");
-  const phoneNumberInputElement = document.getElementById("phone");
-  const addressInputElement = document.getElementById("address");
-  const postCodeInputElement = document.getElementById("code");
   const infoPreviewList = document.getElementById("infoPreview");
   const editButtonElement = document.getElementById("editBTN");
+  const block = document.getElementById("block");
   const continueButtonElement = document.getElementById("continueBTN");
 
+  sumbitButtonElement.disabled = false;
+  editButtonElement.disabled = true;
+  continueButtonElement.disabled = true;
+
+  const inputValues = Array.from(
+    document.getElementById("form").querySelectorAll("input")
+  );
+  const labelValues = Array.from(
+    document.getElementById("form").querySelectorAll("label")
+  );
+  inputValues.pop();
+
   sumbitButtonElement.addEventListener("click", (e) => {
-    e.preventDefault();
-    const fullName = fNameInputElement.value;
-    const email = emailInputElement.value;
-    const phone = phoneNumberInputElement.value;
-    const address = addressInputElement.value;
-    const postCode = postCodeInputElement.value;
+    const fullName = inputValues[0];
+    const email = inputValues[1];
 
-    const fullNameListItemElement = document.createElement("li");
-    const emailListItemElement = document.createElement("li");
-    const phoneListItemElement = document.createElement("li");
-    const addressListItemElement = document.createElement("li");
-    const postCodeListItemElement = document.createElement("li");
+    if (fullName.value && email.value != "") {
+      for (let i = 0; i < inputValues.length; i++) {
+        const liElement = document.createElement("li");
+        liElement.innerHTML = `${labelValues[i].innerText} ${inputValues[i].value}`;
+        infoPreviewList.appendChild(liElement);
+      }
 
-    fullNameListItemElement.textContent = ` Full Name: ${fullName}`;
-    emailListItemElement.textContent = `Email: ${email}`;
-    phoneListItemElement.textContent = `Phone Number: ${phone}`;
-    addressListItemElement.textContent = `Address: ${address}`;
-    postCodeListItemElement.textContent = `Postal Code: ${postCode}`;
-
-    infoPreviewList.appendChild(fullNameListItemElement);
-    infoPreviewList.appendChild(emailListItemElement);
-    infoPreviewList.appendChild(phoneListItemElement);
-    infoPreviewList.appendChild(addressListItemElement);
-    infoPreviewList.appendChild(postCodeListItemElement);
-
-    sumbitButtonElement.disabled = true;
-    editButtonElement.disabled = false;
-    continueButtonElement.disabled = false;
-
-    editButtonElement.addEventListener("click", (e) => {});
-
-    if (!fullName.textContent == "" && !email.textContent == "") {
-      continueButtonElement.addEventListener("click", (e) => {});
+      e.target.disabled = true;
+      editButtonElement.disabled = false;
+      continueButtonElement.disabled = false;
     }
+    for (let input of inputValues) {
+      input.value = "";
+    }
+  });
+
+  editButtonElement.addEventListener("click", (e) => {
+    const listItems = Array.from(infoPreviewList.childNodes);
+    for (let i = 0; i < inputValues.length; i++) {
+      inputValues[i].value = listItems[i].textContent.split(": ")[1];
+      listItems[i].remove();
+    }
+
+    sumbitButtonElement.disabled = false;
+    editButtonElement.disabled = true;
+    continueButtonElement.disabled = true;
+  });
+
+  continueButtonElement.addEventListener("click", (e) => {
+    block.innerHTML = "";
+
+    let h3 = document.createElement("h3");
+    h3.textContent = "Thank you for your reservation!";
+
+    block.appendChild(h3);
   });
 }
