@@ -59,20 +59,44 @@ class ArtGallery {
   }
 
   buyArticle(articleModel, articleName, guestName) {
-    for (const el of this.listOfArticles) {
-      if (el.articleName !== articleName || el.articleModel !== articleModel) {
-        throw new Error(`This article is not found.`);
-      }
-      if (this.listOfArticles[quantity] === 0) {
-        return `The ${el.articleName} is not available.`;
-      }
+    let findModel = this.listOfArticles.find((x) => {
+      return (
+        x.articleModel === articleModel.toLowerCase() &&
+        x.articleName === articleName
+      );
+    });
+    let guest = this.guests.find((x) => {
+      return x.guestName === guestName;
+    });
+
+    if (!findModel) {
+      throw new Error("This article is not found.");
     }
 
-    for (const guest of this.guests) {
-      if (guest.guestName !== guestName) {
-        return `This guest is not invited.`;
-      }
+    if (findModel.quantity === 0) {
+      // throw new Error(`The ${articleName} is not available.`) // no Error throwing!!!
+      return `The ${articleName} is not available.`;
     }
+
+    if (!guest) {
+      // throw new Error("This guest is not invited."); // no Error throwing!!!
+      return "This guest is not invited.";
+    }
+
+    let neededPoints = Number(
+      this.possibleArticles[articleModel.toLowerCase()]
+    );
+    let userPoints = Number(guest.points);
+
+    if (neededPoints <= userPoints) {
+      guest.points -= neededPoints;
+      findModel.quantity -= 1;
+      guest.purchaseArticle += 1;
+    } else {
+      return "You need to more points to purchase the article.";
+    }
+
+    return `${guestName} successfully purchased the article worth ${neededPoints} points.`;
   }
 }
 
