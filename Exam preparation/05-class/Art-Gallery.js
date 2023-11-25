@@ -57,13 +57,35 @@ class ArtGallery {
 
     return `You have successfully invited ${guestName}!`;
   }
+
+  buyArticle(articleModel, articleName, guestName) {
+    for (const el of this.listOfArticles) {
+      if (el.articleName !== articleName || el.articleModel !== articleModel) {
+        throw new Error(`This article is not found.`);
+      }
+      if (this.listOfArticles[quantity] === 0) {
+        return `The ${el.articleName} is not available.`;
+      }
+    }
+
+    for (const guest of this.guests) {
+      if (guest.guestName !== guestName) {
+        return `This guest is not invited.`;
+      }
+    }
+  }
 }
 
 const artGallery = new ArtGallery("Curtis Mayfield");
-console.log(artGallery.inviteGuest("John", "Vip"));
-console.log(artGallery.inviteGuest("Peter", "Middle"));
-console.log(artGallery.inviteGuest("John", "Middle"));
+artGallery.addArticle("picture", "Mona Liza", 3);
+artGallery.addArticle("Item", "Ancient vase", 2);
+artGallery.addArticle("picture", "Mona Liza", 1);
+artGallery.inviteGuest("John", "Vip");
+artGallery.inviteGuest("Peter", "Middle");
+console.log(artGallery.buyArticle("picture", "Mona Liza", "John"));
+console.log(artGallery.buyArticle("item", "Ancient vase", "Peter"));
+console.log(artGallery.buyArticle("item", "Mona Liza", "John"));
 
-// You have successfully invited John!
-// You have successfully invited Peter!
-// John has already been invited.
+// John successfully purchased the article worth 200 points.
+// Peter successfully purchased the article worth 250 points.
+// This article is not found.
