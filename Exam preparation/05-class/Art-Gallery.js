@@ -59,44 +59,51 @@ class ArtGallery {
   }
 
   buyArticle(articleModel, articleName, guestName) {
-    let findModel = this.listOfArticles.find((x) => {
-      return (
-        x.articleModel === articleModel.toLowerCase() &&
-        x.articleName === articleName
-      );
-    });
-    let guest = this.guests.find((x) => {
-      return x.guestName === guestName;
-    });
+    let article;
+    let guest;
+    let isArticleInTheArray = false;
 
-    if (!findModel) {
-      throw new Error("This article is not found.");
+    for (const el of this.listOfArticles) {
+      if (el.articleName !== articleName || el.articleModel !== articleModel) {
+        isArticleInTheArray = false;
+      } else {
+        article = el;
+        isArticleInTheArray = true;
+        break;
+      }
     }
 
-    if (findModel.quantity === 0) {
-      // throw new Error(`The ${articleName} is not available.`) // no Error throwing!!!
+    if (!isArticleInTheArray) {
+      throw new Error(`This article is not found.`);
+    }
+
+    if (article.quantity === 0) {
       return `The ${articleName} is not available.`;
     }
 
-    if (!guest) {
-      // throw new Error("This guest is not invited."); // no Error throwing!!!
-      return "This guest is not invited.";
+    let isGuestInTheArray = false;
+    for (const el of this.guests) {
+      if (el.guestName !== guestName) {
+        isGuestInTheArray = false;
+      } else {
+        isGuestInTheArray = true;
+        guest = el;
+        break;
+      }
+    }
+    if (!isGuestInTheArray) {
+      return `This guest is not invited.`;
     }
 
-    let neededPoints = Number(
-      this.possibleArticles[articleModel.toLowerCase()]
-    );
-    let userPoints = Number(guest.points);
-
-    if (neededPoints <= userPoints) {
-      guest.points -= neededPoints;
-      findModel.quantity -= 1;
-      guest.purchaseArticle += 1;
+    if (guest.points < this.possibleArticles[articleModel]) {
+      return `You need to more points to purchase the article.`;
     } else {
-      return "You need to more points to purchase the article.";
+      article.quantity--;
+      guest.points -= this.possibleArticles[articleModel];
+      guest.purchaseArticle++;
     }
 
-    return `${guestName} successfully purchased the article worth ${neededPoints} points.`;
+    return `${guestName} successfully purchased the article worth ${this.possibleArticles[articleModel]} points.`;
   }
 }
 
