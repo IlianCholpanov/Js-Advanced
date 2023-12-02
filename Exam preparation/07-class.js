@@ -22,7 +22,7 @@ class Garden {
       throw new Error(`There is no ${plantName} in the garden.`);
     }
 
-    if (!plant.ripe) {
+    if (plant.ripe) {
       throw new Error(`The ${plant.plantName} is already ripe.`);
     }
 
@@ -46,12 +46,20 @@ class Garden {
       throw new Error(`There is no ${plantName} in the garden.`);
     }
 
-    if (plant.ripe) {
+    if (!plant.ripe) {
       throw new Error(
         `The ${plantName} cannot be harvested before it is ripe.`
       );
     }
+
+    this.plants.splice(plant, plant);
+    this.storage.push({ plantName, quantity: plant.quantity });
+    this.spaceAvailable += plant.quantity;
+
+    return `The ${plantName} has been successfully harvested.`;
   }
+
+  generateReport() {}
 }
 
 const myGarden = new Garden(250);
