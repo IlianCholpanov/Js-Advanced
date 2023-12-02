@@ -26,7 +26,7 @@ class Garden {
       throw new Error(`The ${plant.plantName} is already ripe.`);
     }
 
-    if (plant.quantity <= 0) {
+    if (plant.quantity < 0 && plant.quantity === 0) {
       throw new Error(`The quantity cannot be zero or negative.`);
     }
 
